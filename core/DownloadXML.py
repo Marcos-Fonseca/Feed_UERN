@@ -10,6 +10,7 @@ def _enableUserAgent():
 
 def downloadXML(urls, directory='.database') -> list:
     print('[RSS] Baixando xmls ...') # log
+    userAgentState = False
 
     x = 0
     while True:
@@ -22,9 +23,10 @@ def downloadXML(urls, directory='.database') -> list:
                 print(f'[RSS] Erro ao tentar baixar da url: {url}')
                 failed.append(url)
 
-        if len(failed) > 0:
+        if len(failed) > 0 and userAgentState == False:
             print(f'[RSS] Tetando baixar novamente usando user-agent')
             _enableUserAgent()
+            userAgentState = True
             urls = failed
         else:
             break

@@ -1,3 +1,4 @@
+import urllib
 import urllib.request as request
 
 def _enableUserAgent():
@@ -19,12 +20,12 @@ def downloadXML(urls, directory='.database') -> list:
             try:
                 request.urlretrieve(url, f'{directory}/file{x}.xml')
                 x += 1
-            except:
+            except urllib.error.HTTPError:
                 print(f'[RSS] Erro ao tentar baixar da url: {url}')
                 failed.append(url)
 
         if len(failed) > 0 and userAgentState == False:
-            print(f'[RSS] Tetando baixar novamente usando user-agent')
+            print(f'[RSS] Tentando baixar novamente usando user-agent')
             _enableUserAgent()
             userAgentState = True
             urls = failed

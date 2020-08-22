@@ -3,6 +3,26 @@ import datetime
 import json
 import os
 
+import pathlib
+
+class NewDatabase():
+    def __init__(self, databaseFile: str, sizeHistory=60):
+        self._sizeHistory = sizeHistory
+        self._filename = pathlib.Path(databaseFile)
+
+        if self._filename.exists():
+            with open(self._filename, 'r') as file:
+                self._database = json.load(file)
+        else:
+            self._database = {
+                'waiting': [],
+                'history': []
+            }
+    
+    def save(self) -> None:
+        with open(self._filename, 'w') as file:
+            json.dump(self._database, file, ensure_ascii=False, indent=2)
+
 class Database():
     """
     Esta classe é usada para gerenciar mensagens, enviadas e pendentes
